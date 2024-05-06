@@ -43,3 +43,25 @@ Berikut adalah hasil dari penjalanan program tersebut.
 | ![Server](img/server3.png) | ![Client 1](img/client31.png) | ![Client 2](img/client32.png) | ![Client 3](img/client33.png) |
 
 Kedua program baik client maupun server memiliki protokol yang tetap sama seperti sebelumnya, yaitu menggunakan library `tokio_websockets` dan koneksi TCP.
+
+## 2.3. Small changes. Add some information to client 
+Pertama, saya mengubah `println!("From server: {}", text);` pada client.rs menjadi `println!("Evans's computer - From server: {}", text);` untuk menambah nama saya. Kedua, saya mengubah `println!("New connection from {addr:?}");` pada server.rs menjadi
+```rust
+println!("New connection from Evans's Computer {addr:?}");
+let bcast_tx = bcast_tx.clone();
+```
+Selanjutnya, saya mengubah kode berikut pada server.rs
+```rust
+println!("From client {addr:?} {text:?}");
+bcast_tx.send(text.into())?;
+```
+menjadi
+```rust
+println!("From client {addr:?} {text:?}");
+bcast_tx.send(format!("{addr} : {text}"))?;
+```
+
+Berikut adalah hasil dari penjalanan program yang telah mengalami pengubahan.
+| Server | Client 1 | Client 2 | Client 3 |
+| ------ | -------- | -------- | -------- |
+| ![Server](img/server4.png) | ![Client 1](img/client41.png) | ![Client 2](img/client42.png) | ![Client 3](img/client43.png) |
